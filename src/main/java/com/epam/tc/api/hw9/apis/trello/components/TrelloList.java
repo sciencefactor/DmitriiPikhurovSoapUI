@@ -1,4 +1,4 @@
 package com.epam.tc.api.hw9.apis.trello.components;
 
-public class TrelloDesc {
+public class TrelloList {
 }

@@ -1,27 +1,18 @@
 package com.epam.tc.api.hw9.tests;
 
-import com.epam.tc.api.hw9.apis.ApiObject;
 import com.epam.tc.api.hw9.apis.trello.TrelloApi;
+import com.epam.tc.api.hw9.asserts.trello.TrelloAssertProvider;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 public class InitTest {
 
-    protected ApiObject apiToTest;
+    protected TrelloApi apiUnderTest;
+    protected TrelloAssertProvider assertsProvider;
 
     @BeforeSuite
     void setUp() {
-        apiToTest = new TrelloApi();
-    }
-
-    @BeforeMethod
-    void authorisePrecondition() {
-        apiToTest.keepAuthorisation();
-    }
-
-    @AfterSuite
-    void tearDown() {
-
+        apiUnderTest = new TrelloApi();
+        assertsProvider = new TrelloAssertProvider();
     }
 }

@@ -1,9 +1,21 @@
 package com.epam.tc.api.hw9.apis.trello.components;
 
-public class TrelloBoard {
-    public void getAllBoards() {
-    }
+import java.util.Map;
+import lombok.Data;
 
-    public void getBoardById(int id) {
-    }
+@Data
+public class TrelloBoard {
+    String id;
+    String name;
+    String desc;
+    String descData;
+    String closed;
+    String idOrganization;
+    String idEnterprise;
+    String pinned;
+    String url;
+    String shortUrl;
+    Map<String, String> prefs;
+    Map<String, String> labelNames;
+
 }
