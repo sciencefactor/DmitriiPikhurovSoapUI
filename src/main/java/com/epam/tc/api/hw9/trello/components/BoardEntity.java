@@ -1,10 +1,10 @@
-package com.epam.tc.api.hw9.apis.trello.components;
+package com.epam.tc.api.hw9.trello.components;
 
 import java.util.Map;
 import lombok.Data;
 
 @Data
-public class TrelloBoard {
+public class BoardEntity {
     String id;
     String name;
     String desc;
@@ -17,5 +17,4 @@ public class TrelloBoard {
     String shortUrl;
     Map<String, String> prefs;
     Map<String, String> labelNames;
-
 }

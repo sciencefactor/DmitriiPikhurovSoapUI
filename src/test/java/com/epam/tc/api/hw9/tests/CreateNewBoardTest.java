@@ -10,7 +10,7 @@ public class CreateNewBoardTest extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Service should create new board")
     void createNewBoard(String name) {
-        Response response = apiUnderTest.createNewBoard(name);
+        Response response = apiUnderTest.createBoard(name);
         System.out.println(response.getBody().asString());
         assertsProvider.responseToCheck(response)
                        .correctUserKey()
@@ -19,14 +19,23 @@ public class CreateNewBoardTest extends InitTest {
                        .statusCodeShouldBeOk();
     }
 
-    @Test
-    void deleteBoard() {
-        Response response = apiUnderTest.deleteBoardByName("RedBoard");
-        System.out.println(response.getBody().asString());
+
+    @Test(dataProvider = "provideBoardNameListName",
+          dataProviderClass = TestDataProviders.class,
+          description = "Service should create new list on board via boardID")
+    void createNewList(String boardName, String name) {
+        Response response = apiUnderTest.createBoard(boardName);
+        apiUnderTest.createList(response.jsonPath().get("id"), name);
         assertsProvider.responseToCheck(response)
                        .correctUserKey()
                        .and()
                        .correctUserToken()
                        .statusCodeShouldBeOk();
     }
+
+    @Test
+    void clear() {
+        apiUnderTest.deleteAllBoards();
+    }
+
 }

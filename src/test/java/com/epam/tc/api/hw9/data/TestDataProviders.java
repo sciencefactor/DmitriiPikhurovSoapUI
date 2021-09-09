@@ -10,4 +10,9 @@ public class TestDataProviders {
     Object[][] boardName(){
         return new Object[][]{{"RedBoard"}};
     }
+
+    @DataProvider(name = "provideBoardNameListName")
+    Object[][] provideBoardNameListName(){
+        return new Object[][]{{"BlackBoard", "BlackList"}};
+    }
 }
