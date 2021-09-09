@@ -7,12 +7,17 @@ import org.testng.annotations.DataProvider;
 public class TestDataProviders {
 
     @DataProvider(name = "boardName")
-    Object[][] boardName(){
-        return new Object[][]{{"RedBoard"}};
+    Object[][] boardName() {
+        return new Object[][] {{"Red Board"}};
     }
 
-    @DataProvider(name = "provideBoardNameListName")
-    Object[][] provideBoardNameListName(){
-        return new Object[][]{{"BlackBoard", "BlackList"}};
+    @DataProvider(name = "boardNameListName")
+    Object[][] boardNameListName() {
+        return new Object[][] {{"Green Board", "Green List"}};
+    }
+
+    @DataProvider(name = "boardNameListNameCardName")
+    Object[][] boardNameListNameCardName() {
+        return new Object[][] {{"Black Board", "Black List", "Black Card"}};
     }
 }

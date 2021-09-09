@@ -1,8 +1,9 @@
 package com.epam.tc.api.hw9.trello.services;
 
 import static com.epam.tc.api.hw9.trello.TrelloApi.DOMAIN;
-import static com.epam.tc.api.hw9.trello.TrelloApi.preAuthorisedRequest;
+import static com.epam.tc.api.hw9.trello.asserts.TrelloAssertProvider.assertThat;
 
+import com.epam.tc.api.hw9.trello.TrelloApi;
 import com.epam.tc.api.hw9.trello.components.ListEntity;
 import io.restassured.response.Response;
 import java.util.ArrayList;
@@ -14,26 +15,26 @@ public class ListsService {
 
     private static List<ListEntity> lists = new ArrayList<>();
 
-    public static void deleteAll() {
+    public static void deleteAllCreated() {
         lists.forEach(list -> deleteList(list.getId()));
+        lists = new ArrayList<>();
     }
 
     public static Response createList(String idBoard, String name) {
-        System.out.println(preAuthorisedRequest);
-        Response response = preAuthorisedRequest
-            .when()
-            .queryParam("idBoard", idBoard)
-            .queryParam("name", name)
-            .post(DOMAIN + LISTS_ENDPOINT);
-        lists.add(response.as(ListEntity.class));
-        return response;
+        Response newList = TrelloApi.preAuthorisedRequest()
+                                    .when()
+                                    .queryParam("idBoard", idBoard)
+                                    .queryParam("name", name)
+                                    .post(DOMAIN + LISTS_ENDPOINT);
+        assertThat().response(newList).statusCodeIsOk().correctJsonFormat();
+        lists.add(newList.as(ListEntity.class));
+        return newList;
     }
 
-    public static Response deleteList(String id){
-        return preAuthorisedRequest
-            .when()
-            .queryParam("value", "true")
-            .put(DOMAIN + LISTS_ENDPOINT + "/" + id + "/" + "closed");
+    public static Response deleteList(String id) {
+        return TrelloApi.preAuthorisedRequest()
+                        .when()
+                        .queryParam("value", "true")
+                        .put(DOMAIN + LISTS_ENDPOINT + "/" + id + "/" + "closed");
     }
-
 }

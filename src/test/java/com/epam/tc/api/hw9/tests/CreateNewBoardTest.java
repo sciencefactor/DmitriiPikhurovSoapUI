@@ -1,5 +1,7 @@
 package com.epam.tc.api.hw9.tests;
 
+import static com.epam.tc.api.hw9.trello.asserts.TrelloAssertProvider.assertThat;
+
 import com.epam.tc.api.hw9.data.TestDataProviders;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -8,34 +10,55 @@ public class CreateNewBoardTest extends InitTest {
 
     @Test(dataProvider = "boardName",
           dataProviderClass = TestDataProviders.class,
-          description = "Service should create new board")
-    void createNewBoard(String name) {
-        Response response = apiUnderTest.createBoard(name);
-        System.out.println(response.getBody().asString());
-        assertsProvider.responseToCheck(response)
-                       .correctUserKey()
-                       .and()
-                       .correctUserToken()
-                       .statusCodeShouldBeOk();
+          description = "Create board -> get board -> check")
+    void serviceShouldCreateNewBoard(String name) {
+        String boardId = apiUnderTest.createBoard(name).jsonPath().get("id");
+        var getBoard = apiUnderTest.getBoardById(boardId);
+        assertThat().response(getBoard).has().correctName(name);
     }
 
-
-    @Test(dataProvider = "provideBoardNameListName",
+    @Test(dataProvider = "boardName",
           dataProviderClass = TestDataProviders.class,
-          description = "Service should create new list on board via boardID")
-    void createNewList(String boardName, String name) {
-        Response response = apiUnderTest.createBoard(boardName);
-        apiUnderTest.createList(response.jsonPath().get("id"), name);
-        assertsProvider.responseToCheck(response)
-                       .correctUserKey()
-                       .and()
-                       .correctUserToken()
-                       .statusCodeShouldBeOk();
+          description = "Create board -> delete board -> check")
+    void serviceShouldDeleteBoard(String name) {
+        String boardId = apiUnderTest.createBoard(name).jsonPath().get("id");
+        var deleteBoard = apiUnderTest.deleteBoardById(boardId);
+        assertThat().response(deleteBoard).statusCodeIsOk();
     }
 
-    @Test
-    void clear() {
-        apiUnderTest.deleteAllBoards();
+    @Test(dataProvider = "boardNameListName",
+          dataProviderClass = TestDataProviders.class,
+          description = "Create board -> create list -> delete board -> check")
+    void serviceShouldDeleteBoardWithList(String boardName, String listName) {
+        String boardId = apiUnderTest.createBoard(boardName).jsonPath().get("id");
+        apiUnderTest.createList(boardId, listName);
+        Response deleteBoard = apiUnderTest.deleteBoardById(boardId);
+        assertThat().response(deleteBoard).statusCodeIsOk();
     }
+
+    @Test(dataProvider = "boardNameListName",
+          dataProviderClass = TestDataProviders.class,
+          description = "Create board -> create list -> delete list -> delete same list again ->check")
+    void serviceShouldDeleteList(String boardName, String listName) {
+        String boardId = apiUnderTest.createBoard(boardName).jsonPath().get("id");
+        String listId = apiUnderTest.createList(boardId, listName).jsonPath().get("id");
+        Response deleteList = apiUnderTest.deleteListById(listId);
+        assertThat().response(deleteList).listIsClosed();
+        Response deleteListRepeat = apiUnderTest.deleteListById(listId);
+        //Should fail
+        assertThat().response(deleteListRepeat).invalidId();
+    }
+
+    @Test(dataProvider = "boardNameListNameCardName",
+          dataProviderClass = TestDataProviders.class,
+          description = "Create board -> create list -> create card -> check")
+    void serviceShouldCreateCard(String boardName, String listName, String cardName) {
+        String boardId = apiUnderTest.createBoard(boardName).jsonPath().get("id");
+        String listId = apiUnderTest.createList(boardId, listName).jsonPath().get("id");
+        Response card = apiUnderTest.createCard(listId, cardName);
+        assertThat().response(card).correctName(cardName);
+    }
+
+
 
 }

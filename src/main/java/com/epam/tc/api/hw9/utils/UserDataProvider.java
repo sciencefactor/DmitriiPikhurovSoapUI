@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class UserDataProvider {
-
-    //TODO replace
-    public static final String PROPERTIES_PATH = "src/main/resources/private/private.auth.properties";
+    
+    public static final String PROPERTIES_PATH = "src/main/resources/auth.properties";
     private static final Properties properties = new Properties();
 
     private UserDataProvider() {
