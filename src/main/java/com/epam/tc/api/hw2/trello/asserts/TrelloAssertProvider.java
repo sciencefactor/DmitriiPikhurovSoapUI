@@ -1,4 +1,4 @@
-package com.epam.tc.api.hw9.trello.asserts;
+package com.epam.tc.api.hw2.trello.asserts;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;

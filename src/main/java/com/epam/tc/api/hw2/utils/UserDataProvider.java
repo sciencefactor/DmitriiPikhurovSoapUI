@@ -1,4 +1,4 @@
-package com.epam.tc.api.hw9.utils;
+package com.epam.tc.api.hw2.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class UserDataProvider {
-    
+
     public static final String PROPERTIES_PATH = "src/main/resources/auth.properties";
     private static final Properties properties = new Properties();
 

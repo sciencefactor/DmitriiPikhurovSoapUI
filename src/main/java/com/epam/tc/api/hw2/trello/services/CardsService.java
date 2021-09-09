@@ -1,10 +1,10 @@
-package com.epam.tc.api.hw9.trello.services;
+package com.epam.tc.api.hw2.trello.services;
 
-import static com.epam.tc.api.hw9.trello.TrelloApi.DOMAIN;
-import static com.epam.tc.api.hw9.trello.asserts.TrelloAssertProvider.assertThat;
+import static com.epam.tc.api.hw2.trello.TrelloApi.DOMAIN;
+import static com.epam.tc.api.hw2.trello.asserts.TrelloAssertProvider.assertThat;
 
-import com.epam.tc.api.hw9.trello.TrelloApi;
-import com.epam.tc.api.hw9.trello.components.CardEntity;
+import com.epam.tc.api.hw2.trello.TrelloApi;
+import com.epam.tc.api.hw2.trello.components.CardEntity;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;

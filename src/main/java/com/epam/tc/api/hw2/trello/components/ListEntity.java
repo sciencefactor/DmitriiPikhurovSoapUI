@@ -1,4 +1,4 @@
-package com.epam.tc.api.hw9.trello.components;
+package com.epam.tc.api.hw2.trello.components;
 
 import lombok.Data;
 

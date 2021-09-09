@@ -1,12 +1,12 @@
-package com.epam.tc.api.hw9.tests;
+package com.epam.tc.api.hw2.tests;
 
-import static com.epam.tc.api.hw9.trello.asserts.TrelloAssertProvider.assertThat;
+import static com.epam.tc.api.hw2.trello.asserts.TrelloAssertProvider.assertThat;
 
-import com.epam.tc.api.hw9.data.TestDataProviders;
+import com.epam.tc.api.hw2.data.TestDataProviders;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
-public class CreateNewBoardTest extends InitTest {
+public class CreateAndDeleteEntities extends InitTest {
 
     @Test(dataProvider = "boardName",
           dataProviderClass = TestDataProviders.class,

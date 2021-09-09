@@ -1,10 +1,10 @@
-package com.epam.tc.api.hw9.trello;
+package com.epam.tc.api.hw2.trello;
 
-import com.epam.tc.api.hw9.trello.services.BoardsService;
-import com.epam.tc.api.hw9.trello.services.CardsService;
-import com.epam.tc.api.hw9.trello.services.ListsService;
-import com.epam.tc.api.hw9.trello.services.MembersService;
-import com.epam.tc.api.hw9.utils.UserDataProvider;
+import com.epam.tc.api.hw2.trello.services.BoardsService;
+import com.epam.tc.api.hw2.trello.services.CardsService;
+import com.epam.tc.api.hw2.trello.services.ListsService;
+import com.epam.tc.api.hw2.trello.services.MembersService;
+import com.epam.tc.api.hw2.utils.UserDataProvider;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

@@ -1,4 +1,4 @@
-package com.epam.tc.api.hw9.data;
+package com.epam.tc.api.hw2.data;
 
 import lombok.experimental.UtilityClass;
 import org.testng.annotations.DataProvider;
