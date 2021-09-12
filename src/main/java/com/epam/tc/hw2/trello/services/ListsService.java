@@ -1,39 +1,41 @@
 package com.epam.tc.hw2.trello.services;
 
+import static com.epam.tc.hw2.trello.TrelloApi.DOMAIN;
 import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
 
 import com.epam.tc.hw2.trello.TrelloApi;
+import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
 import io.restassured.response.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListsService {
 
     public static final String LISTS_ENDPOINT = "/lists";
 
-    private static List<ListDto> lists = new ArrayList<>();
-
-    public static void deleteAllCreated() {
-        lists.forEach(list -> deleteList(list.getId()));
-        lists = new ArrayList<>();
-    }
-
-    public static Response createList(String idBoard, String name) {
-        Response newList = TrelloApi.preAuthorisedRequest()
+    public static ListDto create(BoardDto board, ListDto list) {
+        Response newListResponse = TrelloApi.preAuthorisedRequest()
                                     .when()
-                                    .queryParam("idBoard", idBoard)
-                                    .queryParam("name", name)
-                                    .post(TrelloApi.DOMAIN + LISTS_ENDPOINT);
-        assertThat().response(newList).statusCodeIsOk().correctJsonFormat();
-        lists.add(newList.as(ListDto.class));
-        return newList;
+                                    .queryParam("idBoard", board.getId())
+                                    .queryParam("name", list.getName())
+                                    .post(DOMAIN + LISTS_ENDPOINT);
+        assertThat().response(newListResponse).statusCodeIsOk().correctJsonFormat();
+        return newListResponse.as(ListDto.class);
     }
 
-    public static Response deleteList(String id) {
+    public static Response delete(ListDto list) {
         return TrelloApi.preAuthorisedRequest()
                         .when()
                         .queryParam("value", "true")
-                        .put(TrelloApi.DOMAIN + LISTS_ENDPOINT + "/" + id + "/" + "closed");
+                        .put(DOMAIN + LISTS_ENDPOINT + "/" + list.getId() + "/closed");
+    }
+
+    public static ListDto move(ListDto list, BoardDto newBoard) {
+        Response moveListResponse = TrelloApi.preAuthorisedRequest()
+                 .when()
+                 .queryParam("value", newBoard.getId())
+                 .put(DOMAIN + LISTS_ENDPOINT + "/" + list.getId() + "/idBoard");
+
+        assertThat().response(moveListResponse).statusCodeIsOk().correctJsonFormat();
+        return moveListResponse.as(ListDto.class);
     }
 }

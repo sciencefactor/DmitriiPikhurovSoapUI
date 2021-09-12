@@ -16,8 +16,8 @@ public class TestDataProviders {
         return new Object[][] {{"Green Board", "Green List"}};
     }
 
-    @DataProvider(name = "boardNameListNameCardName")
+    @DataProvider(name = "boardsNameListName")
     Object[][] boardNameListNameCardName() {
-        return new Object[][] {{"Black Board", "Black List", "Black Card"}};
+        return new Object[][] {{"Black Board", "White board", "Black List"}};
     }
 }

@@ -21,6 +21,6 @@ public class MembersService {
 
     public static void deleteAllRemoteBoards() {
         BoardDto[] allBoards = getMemberBoards().jsonPath().getObject("$", BoardDto[].class);
-        Arrays.stream(allBoards).forEach(board -> BoardsService.deleteBoard(board.getId()));
+        Arrays.stream(allBoards).forEach(BoardsService::delete);
     }
 }

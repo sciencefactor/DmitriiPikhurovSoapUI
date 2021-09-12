@@ -49,13 +49,13 @@ public class TrelloAssertProvider {
         return this;
     }
 
-    public TrelloAssertProvider listIsClosed() {
-        responseToCheck.body("closed", is(true));
+    public TrelloAssertProvider invalidId() {
+        responseToCheck.body(equalTo("invalid id"));
         return this;
     }
 
-    public TrelloAssertProvider invalidId() {
-        responseToCheck.body(equalTo("invalid id"));
+    public TrelloAssertProvider isClosed() {
+        responseToCheck.body("closed", is(true));
         return this;
     }
 

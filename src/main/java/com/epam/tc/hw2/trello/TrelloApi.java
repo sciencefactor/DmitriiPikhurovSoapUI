@@ -1,10 +1,11 @@
 package com.epam.tc.hw2.trello;
 
+import com.epam.tc.hw2.trello.dto.BoardDto;
+import com.epam.tc.hw2.trello.dto.ListDto;
 import com.epam.tc.hw2.trello.services.BoardsService;
-import com.epam.tc.hw2.trello.services.CardsService;
 import com.epam.tc.hw2.trello.services.ListsService;
 import com.epam.tc.hw2.trello.services.MembersService;
-import com.epam.tc.hw2.utils.UserDataProvider;
+import com.epam.tc.hw2.trello.utils.UserDataProvider;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -16,12 +17,6 @@ public class TrelloApi {
     public TrelloApi() {
     }
 
-    public void restoreService() {
-        CardsService.deleteAllCreated();
-        ListsService.deleteAllCreated();
-        BoardsService.deleteAllCreated();
-    }
-
     public static RequestSpecification preAuthorisedRequest() {
         return preAuthorisedRequest = RestAssured.given()
                                                  .queryParam("key", UserDataProvider.getUserKey())
@@ -29,31 +24,32 @@ public class TrelloApi {
                                                  .contentType("application/xml");
     }
 
-    public Response createBoard(String name) {
-        return BoardsService.createBoard(name);
+    public BoardDto createBoard(BoardDto board) {
+        return BoardsService.create(board);
     }
 
-    public Response getBoardById(String id) {
-        return BoardsService.getBoard(id);
+    public BoardDto getBoard(BoardDto board) {
+        return BoardsService.get(board);
     }
 
-    public Response deleteBoardById(String id) {
-        return BoardsService.deleteBoard(id);
+    public Response deleteBoard(BoardDto board) {
+        return BoardsService.delete(board);
     }
 
     public void deleteAllBoards() {
         MembersService.deleteAllRemoteBoards();
     }
 
-    public Response createList(String idBoard, String name) {
-        return ListsService.createList(idBoard, name);
+    public ListDto createList(BoardDto board, ListDto list) {
+        return ListsService.create(board, list);
     }
 
-    public Response deleteListById(String id) {
-        return ListsService.deleteList(id);
+    public Response deleteList(ListDto list) {
+        return ListsService.delete(list);
     }
 
-    public Response createCard(String idList, String name) {
-        return CardsService.createCard(idList, name);
+    public ListDto moveList(ListDto list, BoardDto newBoard) {
+        return ListsService.move(list, newBoard);
     }
+
 }

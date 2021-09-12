@@ -1,4 +1,4 @@
-package com.epam.tc.hw2.utils;
+package com.epam.tc.hw2.trello.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
