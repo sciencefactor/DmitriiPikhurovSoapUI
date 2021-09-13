@@ -11,6 +11,7 @@
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <maven-surefire-plugin.suiteXmlFile>
       ${project.build.testOutputDirectory}/testng/homework_2.test.xml
