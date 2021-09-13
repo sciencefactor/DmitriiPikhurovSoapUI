@@ -7,6 +7,7 @@ import com.epam.tc.hw2.data.TestDataProviders;
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
 import io.restassured.response.Response;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 public class CrudEntities extends InitTest {
@@ -20,6 +21,7 @@ public class CrudEntities extends InitTest {
         createdBoards.add(remoteBoard);
         var getBoard = apiUnderTest.getBoard(remoteBoard);
         assertEquals(getBoard, remoteBoard);
+        Reporter.log( "Test: serviceShouldCreateNewBoard complete", true );
     }
 
     @Test(dataProvider = "boardName",
@@ -31,6 +33,7 @@ public class CrudEntities extends InitTest {
         createdBoards.add(remoteBoard);
         Response deleteBoard = apiUnderTest.deleteBoard(remoteBoard);
         assertThat().response(deleteBoard).statusCodeIsOk();
+        Reporter.log( "Test: serviceShouldDeleteBoard complete", true );
     }
 
     @Test(dataProvider = "boardNameListName",
@@ -42,6 +45,7 @@ public class CrudEntities extends InitTest {
         apiUnderTest.createList(remoteBoard, ListDto.builder().name(listName).build());
         Response deleteBoard = apiUnderTest.deleteBoard(remoteBoard);
         assertThat().response(deleteBoard).statusCodeIsOk();
+        Reporter.log( "Test: serviceShouldDeleteBoardWithList complete", true );
     }
 
     @Test(dataProvider = "boardNameListName",
@@ -55,6 +59,7 @@ public class CrudEntities extends InitTest {
         assertThat().response(deleteList).isClosed();
         Response deleteListRepeat = apiUnderTest.deleteList(remoteList);
         assertThat().response(deleteListRepeat).isClosed();
+        Reporter.log( "Test: serviceShouldDeleteList complete", true );
     }
 
     @Test(dataProvider = "boardsNameListName",
@@ -69,5 +74,6 @@ public class CrudEntities extends InitTest {
         var remoteList = apiUnderTest.createList(remoteSource, ListDto.builder().name(listName).build());
         var movedList = apiUnderTest.moveList(remoteList, remoteTarget);
         assertEquals(movedList.getName(), remoteList.getName());
+        Reporter.log( "Test: serviceShouldCreateCard complete", true );
     }
 }
