@@ -549,10 +549,7 @@
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.limits).to.eql({});\r",
 							"});\r",
-							"\r",
-							"pm.test(\"Response time is less than 400ms\", function () {\r",
-							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
