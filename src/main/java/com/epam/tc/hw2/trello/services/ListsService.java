@@ -18,7 +18,7 @@ public class ListsService {
                                     .queryParam("idBoard", board.getId())
                                     .queryParam("name", list.getName())
                                     .post(DOMAIN + LISTS_ENDPOINT);
-        assertThat().response(newListResponse).statusCodeIsOk().correctJsonFormat();
+        assertThat().response(newListResponse).statusCodeIsOk().checkCorrectJsonFormat();
         return newListResponse.as(ListDto.class);
     }
 
@@ -35,7 +35,7 @@ public class ListsService {
                  .queryParam("value", newBoard.getId())
                  .put(DOMAIN + LISTS_ENDPOINT + "/" + list.getId() + "/idBoard");
 
-        assertThat().response(moveListResponse).statusCodeIsOk().correctJsonFormat();
+        assertThat().response(moveListResponse).statusCodeIsOk().checkCorrectJsonFormat();
         return moveListResponse.as(ListDto.class);
     }
 }

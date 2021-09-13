@@ -14,9 +14,6 @@ public class TrelloAssertProvider {
 
     ValidatableResponse responseToCheck;
 
-    public TrelloAssertProvider() {
-    }
-
     public static TrelloAssertProvider assertThat() {
         return new TrelloAssertProvider();
     }
@@ -26,20 +23,12 @@ public class TrelloAssertProvider {
         return this;
     }
 
-    public TrelloAssertProvider and() {
-        return this;
-    }
-
-    public TrelloAssertProvider has() {
-        return this;
-    }
-
-    public TrelloAssertProvider correctJsonFormat() {
+    public TrelloAssertProvider checkCorrectJsonFormat() {
         responseToCheck.assertThat().contentType(ContentType.JSON);
         return this;
     }
 
-    public TrelloAssertProvider correctId(String id) {
+    public TrelloAssertProvider checkCorrectId(String id) {
         responseToCheck.body("id", is(id));
         return this;
     }
@@ -49,27 +38,27 @@ public class TrelloAssertProvider {
         return this;
     }
 
-    public TrelloAssertProvider invalidId() {
+    public TrelloAssertProvider checkInvalidId() {
         responseToCheck.body(equalTo("invalid id"));
         return this;
     }
 
-    public TrelloAssertProvider isClosed() {
+    public TrelloAssertProvider checkIsItClosed() {
         responseToCheck.body("closed", is(true));
         return this;
     }
 
-    public TrelloAssertProvider validUserKey() {
+    public TrelloAssertProvider checkValidUserKey() {
         responseToCheck.body(not(equalTo("invalid key")));
         return this;
     }
 
-    public TrelloAssertProvider correctName(String name) {
+    public TrelloAssertProvider checkCorrectName(String name) {
         responseToCheck.body("name", is(name));
         return this;
     }
 
-    public TrelloAssertProvider validUserToken() {
+    public TrelloAssertProvider checkValidUserToken() {
         responseToCheck.body(not(equalTo("invalid token")));
         return this;
     }

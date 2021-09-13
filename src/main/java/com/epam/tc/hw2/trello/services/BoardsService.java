@@ -16,7 +16,7 @@ public class BoardsService {
                                              .queryParam("name", board.getName())
                                              .when()
                                              .post(TrelloApi.DOMAIN + BOARDS_ENDPOINT);
-        assertThat().response(newBoardResponse).statusCodeIsOk().correctJsonFormat();
+        assertThat().response(newBoardResponse).statusCodeIsOk().checkCorrectJsonFormat();
         return newBoardResponse.as(BoardDto.class);
     }
 
@@ -30,7 +30,7 @@ public class BoardsService {
         Response getBoardResponse = TrelloApi.preAuthorisedRequest()
                                              .when()
                                              .get(TrelloApi.DOMAIN + BOARDS_ENDPOINT + "/" + board.getId());
-        assertThat().response(getBoardResponse).statusCodeIsOk().correctJsonFormat();
+        assertThat().response(getBoardResponse).statusCodeIsOk().checkCorrectJsonFormat();
         return getBoardResponse.as(BoardDto.class);
     }
 

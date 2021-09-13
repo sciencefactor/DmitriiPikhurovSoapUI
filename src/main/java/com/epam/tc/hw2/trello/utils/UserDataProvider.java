@@ -10,8 +10,6 @@ public class UserDataProvider {
     public static final String PROPERTIES_PATH = "src/main/resources/auth.properties";
     private static final Properties properties = new Properties();
 
-    private UserDataProvider() {
-    }
 
     public static String getUserKey() {
         loadProperties();
