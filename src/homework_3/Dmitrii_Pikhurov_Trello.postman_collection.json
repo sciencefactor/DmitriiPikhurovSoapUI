@@ -1,0 +1,696 @@
+{
+	"info": {
+		"_postman_id": "0ee82d13-310f-460b-8f31-83084a6a21cc",
+		"name": "Trello Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create board (tests)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Board should have correct name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"board_name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"source_board\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/boards?name={{board_name}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"boards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{board_name}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"source_list\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/lists/?idBoard={{source_board}}&name={{list_name}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"lists",
+						""
+					],
+					"query": [
+						{
+							"key": "idBoard",
+							"value": "{{source_board}}"
+						},
+						{
+							"key": "name",
+							"value": "{{list_name}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create card (tests)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body contains trello domain\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"https://trello.com/\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Card should have correct list id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.idList).to.eql(pm.environment.get(\"source_list\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"card\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/cards?key={{key}}&token={{token}}&idList={{source_list}}&name={{card_name}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "idList",
+							"value": "{{source_list}}"
+						},
+						{
+							"key": "name",
+							"value": "{{card_name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create checklist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"checklist\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/checklists?key={{key}}&token={{token}}&idCard={{card}}&name={{checkList_name}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"checklists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "idCard",
+							"value": "{{card}}"
+						},
+						{
+							"key": "name",
+							"value": "{{checkList_name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/members/me?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"members",
+						"me"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all boards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/members/me/boards?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"members",
+						"me",
+						"boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/boards/{{source_board}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"boards",
+						"{{source_board}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/lists/{{source_list}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"lists",
+						"{{source_list}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get card",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/cards/{{card}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"cards",
+						"{{card}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get checklist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/checklists/{{checklist}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"checklists",
+						"{{checklist}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update board name",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/boards/{{source_board}}?key={{key}}&token={{token}}&name=Udated_Board_Name",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"boards",
+						"{{source_board}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "Udated_Board_Name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update list name",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/lists/{{source_list}}?key={{key}}&token={{token}}&name=Updated_List_Name",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"lists",
+						"{{source_list}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "Updated_List_Name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update card name",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/cards/{{card}}?key={{key}}&token={{token}}&name=Updated_Card_Name",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"cards",
+						"{{card}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "Updated_Card_Name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update checklist",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/checklists/{{checklist}}?key={{key}}&token={{token}}&name=Updated_Check_Name",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"checklists",
+						"{{checklist}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "name",
+							"value": "Updated_Check_Name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete checklist (tests)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should return empty list\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.limits).to.eql({});\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/checklists/{{checklist}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"checklists",
+						"{{checklist}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/cards/{{card}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"cards",
+						"{{card}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete list (delete impossible, only archived)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/lists/{{source_list}}/closed?key={{key}}&token={{token}}&value=true",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"lists",
+						"{{source_list}}",
+						"closed"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						},
+						{
+							"key": "value",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/boards/{{source_board}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"boards",
+						"{{source_board}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
