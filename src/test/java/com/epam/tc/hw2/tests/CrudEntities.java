@@ -16,10 +16,10 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> get board -> compare")
     void serviceShouldCreateNewBoard(String name) {
-        var boardDraft = BoardDto.builder().name(name).build();
-        var remoteBoard = apiUnderTest.createBoard(boardDraft);
+        BoardDto boardDraft = BoardDto.builder().name(name).build();
+        BoardDto remoteBoard = apiUnderTest.createBoard(boardDraft);
         createdBoards.add(remoteBoard);
-        var getBoard = apiUnderTest.getBoard(remoteBoard);
+        BoardDto getBoard = apiUnderTest.getBoard(remoteBoard);
         assertEquals(getBoard, remoteBoard);
         Reporter.log( "Test: serviceShouldCreateNewBoard complete", true );
     }
@@ -28,8 +28,8 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> delete board -> check status")
     void serviceShouldDeleteBoard(String name) {
-        var boardDraft = BoardDto.builder().name(name).build();
-        var remoteBoard = apiUnderTest.createBoard(boardDraft);
+        BoardDto boardDraft = BoardDto.builder().name(name).build();
+        BoardDto remoteBoard = apiUnderTest.createBoard(boardDraft);
         createdBoards.add(remoteBoard);
         Response deleteBoard = apiUnderTest.deleteBoard(remoteBoard);
         assertThat().response(deleteBoard).statusCodeIsOk();
@@ -40,7 +40,7 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> create list -> delete board -> check status")
     void serviceShouldDeleteBoardWithList(String boardName, String listName) {
-        var remoteBoard = apiUnderTest.createBoard(BoardDto.builder().name(boardName).build());
+        BoardDto remoteBoard = apiUnderTest.createBoard(BoardDto.builder().name(boardName).build());
         createdBoards.add(remoteBoard);
         apiUnderTest.createList(remoteBoard, ListDto.builder().name(listName).build());
         Response deleteBoard = apiUnderTest.deleteBoard(remoteBoard);
@@ -52,9 +52,9 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> create list -> delete list -> delete same list again -> check if closed")
     void serviceShouldDeleteList(String boardName, String listName) {
-        var remoteBoard = apiUnderTest.createBoard(BoardDto.builder().name(boardName).build());
+        BoardDto remoteBoard = apiUnderTest.createBoard(BoardDto.builder().name(boardName).build());
         createdBoards.add(remoteBoard);
-        var remoteList = apiUnderTest.createList(remoteBoard, ListDto.builder().name(listName).build());
+        ListDto remoteList = apiUnderTest.createList(remoteBoard, ListDto.builder().name(listName).build());
         Response deleteList = apiUnderTest.deleteList(remoteList);
         assertThat().response(deleteList).isClosed();
         Response deleteListRepeat = apiUnderTest.deleteList(remoteList);
@@ -67,12 +67,12 @@ public class CrudEntities extends InitTest {
           description = "Create board -> create board -> create list -> "
               + "move list from one board to another -> compare lists before and after")
     void serviceShouldCreateCard(String sourceBoardName, String targetBoardName, String listName) {
-        var remoteSource = apiUnderTest.createBoard(BoardDto.builder().name(sourceBoardName).build());
+        BoardDto remoteSource = apiUnderTest.createBoard(BoardDto.builder().name(sourceBoardName).build());
         createdBoards.add(remoteSource);
-        var remoteTarget = apiUnderTest.createBoard(BoardDto.builder().name(targetBoardName).build());
+        BoardDto remoteTarget = apiUnderTest.createBoard(BoardDto.builder().name(targetBoardName).build());
         createdBoards.add(remoteTarget);
-        var remoteList = apiUnderTest.createList(remoteSource, ListDto.builder().name(listName).build());
-        var movedList = apiUnderTest.moveList(remoteList, remoteTarget);
+        ListDto remoteList = apiUnderTest.createList(remoteSource, ListDto.builder().name(listName).build());
+        ListDto movedList = apiUnderTest.moveList(remoteList, remoteTarget);
         assertEquals(movedList.getName(), remoteList.getName());
         Reporter.log( "Test: serviceShouldCreateCard complete", true );
     }
