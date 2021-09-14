@@ -1,41 +1,34 @@
 package com.epam.tc.hw2.trello.services;
 
-import static com.epam.tc.hw2.trello.TrelloApi.DOMAIN;
-import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
-
-import com.epam.tc.hw2.trello.TrelloApi;
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSenderOptions;
+import java.util.Map;
 
 public class ListsService {
 
     public static final String LISTS_ENDPOINT = "/lists";
 
     public static ListDto create(BoardDto board, ListDto list) {
-        Response newListResponse = TrelloApi.preAuthorisedRequest()
-                                    .when()
-                                    .queryParam("idBoard", board.getId())
-                                    .queryParam("name", list.getName())
-                                    .post(DOMAIN + LISTS_ENDPOINT);
-        assertThat().response(newListResponse).statusCodeIsOk().checkCorrectJsonFormat();
+        Map<String, String> params = Map.of("idBoard", board.getId(), "name", list.getName());
+        Response newListResponse = new CommonService()
+            .makeRequest(RequestSenderOptions::post, LISTS_ENDPOINT, params);
         return newListResponse.as(ListDto.class);
     }
 
     public static Response delete(ListDto list) {
-        return TrelloApi.preAuthorisedRequest()
-                        .when()
-                        .queryParam("value", "true")
-                        .put(DOMAIN + LISTS_ENDPOINT + "/" + list.getId() + "/closed");
+        Map<String, String> params = Map.of("value", "true");
+        String uri = LISTS_ENDPOINT + "/" + list.getId() + "/closed";
+        return new CommonService()
+            .makeRequest(RequestSenderOptions::put, uri, params);
     }
 
     public static ListDto move(ListDto list, BoardDto newBoard) {
-        Response moveListResponse = TrelloApi.preAuthorisedRequest()
-                 .when()
-                 .queryParam("value", newBoard.getId())
-                 .put(DOMAIN + LISTS_ENDPOINT + "/" + list.getId() + "/idBoard");
-
-        assertThat().response(moveListResponse).statusCodeIsOk().checkCorrectJsonFormat();
+        Map<String, String> params = Map.of("value", newBoard.getId());
+        String uri = LISTS_ENDPOINT + "/" + list.getId() + "/idBoard";
+        Response moveListResponse = new CommonService()
+            .makeRequest(RequestSenderOptions::put, uri, params);
         return moveListResponse.as(ListDto.class);
     }
 }

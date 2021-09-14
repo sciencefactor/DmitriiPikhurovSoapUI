@@ -1,37 +1,31 @@
 package com.epam.tc.hw2.trello.services;
 
-import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
-
-import com.epam.tc.hw2.trello.TrelloApi;
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSenderOptions;
+import java.util.Map;
 
 public class BoardsService {
 
     public static final String BOARDS_ENDPOINT = "/boards";
 
     public static BoardDto create(BoardDto board) {
-        Response newBoardResponse = TrelloApi.preAuthorisedRequest()
-                                             .given()
-                                             .queryParam("name", board.getName())
-                                             .when()
-                                             .post(TrelloApi.DOMAIN + BOARDS_ENDPOINT);
-        assertThat().response(newBoardResponse).statusCodeIsOk().checkCorrectJsonFormat();
+        Map<String, String> params = Map.of("name", board.getName());
+        Response newBoardResponse = new CommonService()
+            .makeRequest(RequestSenderOptions::post, BOARDS_ENDPOINT, params);
         return newBoardResponse.as(BoardDto.class);
     }
 
     public static Response delete(BoardDto board) {
-        return TrelloApi.preAuthorisedRequest()
-                        .when()
-                        .delete(TrelloApi.DOMAIN + BOARDS_ENDPOINT + "/" + board.getId());
+        String uri = BOARDS_ENDPOINT + "/" + board.getId();
+        return new CommonService()
+            .makeRequest(RequestSenderOptions::delete, uri);
     }
 
-    public static BoardDto get(BoardDto board) {
-        Response getBoardResponse = TrelloApi.preAuthorisedRequest()
-                                             .when()
-                                             .get(TrelloApi.DOMAIN + BOARDS_ENDPOINT + "/" + board.getId());
-        assertThat().response(getBoardResponse).statusCodeIsOk().checkCorrectJsonFormat();
+    public static BoardDto getResponse(BoardDto board) {
+        String uri = BOARDS_ENDPOINT + "/" + board.getId();
+        Response getBoardResponse = new CommonService()
+            .makeRequest(RequestSenderOptions::get, uri);
         return getBoardResponse.as(BoardDto.class);
     }
-
 }
