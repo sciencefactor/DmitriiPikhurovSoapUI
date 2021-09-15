@@ -1,5 +1,8 @@
 package com.epam.tc.hw2.trello.services;
 
+import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
+
+import com.epam.tc.hw2.trello.CommonService;
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
 import io.restassured.response.Response;
@@ -14,6 +17,10 @@ public class ListsService {
         Map<String, String> params = Map.of("idBoard", board.getId(), "name", list.getName());
         Response newListResponse = new CommonService()
             .makeRequest(RequestSenderOptions::post, LISTS_ENDPOINT, params);
+
+        assertThat(newListResponse)
+            .checkContentIsJson()
+            .checkListHasCorrectKeys();
         return newListResponse.as(ListDto.class);
     }
 

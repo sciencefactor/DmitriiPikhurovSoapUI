@@ -2,6 +2,7 @@ package com.epam.tc.hw2.trello.services;
 
 import static com.epam.tc.hw2.trello.services.BoardsService.BOARDS_ENDPOINT;
 
+import com.epam.tc.hw2.trello.CommonService;
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSenderOptions;

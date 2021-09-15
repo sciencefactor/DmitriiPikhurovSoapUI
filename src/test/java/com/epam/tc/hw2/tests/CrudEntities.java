@@ -19,19 +19,19 @@ public class CrudEntities extends InitTest {
     void createNewBoardPrecondition() {
         String name = RandomStringUtils.randomAlphabetic(10);
         BoardDto boardDraft = BoardDto.builder().name(name).build();
-        testBoard = apiUnderTest.createBoard(boardDraft);
+        testBoard = trelloApi.createBoard(boardDraft);
         createdBoards.add(testBoard);
     }
 
     @Test(description = "Create board -> get board -> compare")
     void serviceShouldCreateNewBoard() {
-        BoardDto getBoard = apiUnderTest.getBoard(testBoard);
+        BoardDto getBoard = trelloApi.getBoard(testBoard);
         assertEquals(getBoard, testBoard);
     }
 
     @Test(description = "Create board -> delete board -> check status")
     void serviceShouldDeleteBoard() {
-        Response deleteBoard = apiUnderTest.deleteBoard(testBoard);
+        Response deleteBoard = trelloApi.deleteBoard(testBoard);
         createdBoards.remove(testBoard);
         assertThat(deleteBoard).statusCodeIsOk();
     }
@@ -40,8 +40,8 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> create list -> delete board -> check status")
     void serviceShouldDeleteBoardWithList(String listName) {
-        apiUnderTest.createList(testBoard, ListDto.builder().name(listName).build());
-        Response deleteBoard = apiUnderTest.deleteBoard(testBoard);
+        trelloApi.createList(testBoard, ListDto.builder().name(listName).build());
+        Response deleteBoard = trelloApi.deleteBoard(testBoard);
         createdBoards.remove(testBoard);
         assertThat(deleteBoard).statusCodeIsOk();
     }
@@ -50,10 +50,14 @@ public class CrudEntities extends InitTest {
           dataProviderClass = TestDataProviders.class,
           description = "Create board -> create list -> delete list -> delete same list again -> check if closed")
     void serviceShouldDeleteList(String listName) {
-        ListDto remoteList = apiUnderTest.createList(testBoard, ListDto.builder().name(listName).build());
-        Response deleteList = apiUnderTest.deleteList(remoteList);
+        ListDto remoteList = trelloApi.createList(testBoard, ListDto.builder().name(listName).build());
+        Response deleteList = trelloApi.deleteList(remoteList);
+
+        // Assert that first deletion of list was successful
         assertThat(deleteList).checkIsItClosed();
-        Response deleteListRepeat = apiUnderTest.deleteList(remoteList);
+        Response deleteListRepeat = trelloApi.deleteList(remoteList);
+
+        // Assert that repeated deletion of list was successful again
         assertThat(deleteListRepeat).checkIsItClosed();
     }
 
@@ -62,10 +66,10 @@ public class CrudEntities extends InitTest {
           description = "Create board -> create board -> create list -> "
               + "move list from one board to another -> compare lists before and after")
     void serviceShouldMoveCard(String boardName, String listName) {
-        ListDto remoteList = apiUnderTest.createList(testBoard, ListDto.builder().name(listName).build());
-        BoardDto remoteTarget = apiUnderTest.createBoard(BoardDto.builder().name(boardName).build());
+        ListDto remoteList = trelloApi.createList(testBoard, ListDto.builder().name(listName).build());
+        BoardDto remoteTarget = trelloApi.createBoard(BoardDto.builder().name(boardName).build());
         createdBoards.add(remoteTarget);
-        ListDto movedList = apiUnderTest.moveList(remoteList, remoteTarget);
+        ListDto movedList = trelloApi.moveList(remoteList, remoteTarget);
         assertEquals(movedList.getName(), remoteList.getName());
     }
 }
