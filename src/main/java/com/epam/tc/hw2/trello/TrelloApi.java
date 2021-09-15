@@ -2,9 +2,9 @@ package com.epam.tc.hw2.trello;
 
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
-import com.epam.tc.hw2.trello.services.BoardsService;
-import com.epam.tc.hw2.trello.services.ListsService;
-import com.epam.tc.hw2.trello.services.MembersService;
+import com.epam.tc.hw2.trello.services.dtoservices.BoardsService;
+import com.epam.tc.hw2.trello.services.dtoservices.ListsService;
+import com.epam.tc.hw2.trello.services.dtoservices.MembersService;
 import io.restassured.response.Response;
 
 public class TrelloApi {

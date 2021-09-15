@@ -1,9 +1,9 @@
-package com.epam.tc.hw2.trello.services;
+package com.epam.tc.hw2.trello.services.dtoservices;
 
-import static com.epam.tc.hw2.trello.services.BoardsService.BOARDS_ENDPOINT;
+import static com.epam.tc.hw2.trello.services.dtoservices.BoardsService.BOARDS_ENDPOINT;
 
-import com.epam.tc.hw2.trello.CommonService;
 import com.epam.tc.hw2.trello.dto.BoardDto;
+import com.epam.tc.hw2.trello.services.CommonService;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSenderOptions;
 import java.util.Arrays;

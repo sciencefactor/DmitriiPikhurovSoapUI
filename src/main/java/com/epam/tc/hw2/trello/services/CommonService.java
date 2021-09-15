@@ -1,4 +1,4 @@
-package com.epam.tc.hw2.trello;
+package com.epam.tc.hw2.trello.services;
 
 import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
 import static io.restassured.RestAssured.given;

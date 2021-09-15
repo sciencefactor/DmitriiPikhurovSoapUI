@@ -1,9 +1,9 @@
-package com.epam.tc.hw2.trello.services;
+package com.epam.tc.hw2.trello.services.dtoservices;
 
 import static com.epam.tc.hw2.trello.asserts.TrelloAssertProvider.assertThat;
 
-import com.epam.tc.hw2.trello.CommonService;
 import com.epam.tc.hw2.trello.dto.BoardDto;
+import com.epam.tc.hw2.trello.services.CommonService;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSenderOptions;
 import java.util.Map;
@@ -19,7 +19,8 @@ public class BoardsService {
 
         assertThat(newBoardResponse)
             .checkContentIsJson()
-            .checkBoardHasCorrectKeys();
+            .checkBoardHasCorrectKeys()
+            .checkBoardDto(board);
         return newBoardResponse.as(BoardDto.class);
     }
 
