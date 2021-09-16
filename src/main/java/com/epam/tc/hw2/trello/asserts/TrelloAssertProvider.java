@@ -1,6 +1,7 @@
 package com.epam.tc.hw2.trello.asserts;
 
 import static org.hamcrest.Matchers.*;
+import static org.testng.Assert.assertEquals;
 
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
@@ -9,7 +10,6 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 public class TrelloAssertProvider {
@@ -33,8 +33,8 @@ public class TrelloAssertProvider {
         BoardDto boardToCheck = responseToCheck
             .extract()
             .as(BoardDto.class);
-        MatcherAssert.assertThat(boardToCheck.getName(), equalTo(boardDraft.getName()));
-        MatcherAssert.assertThat(boardToCheck.isClosed(), equalTo(boardDraft.isClosed()));
+        assertEquals(boardToCheck.getName(), boardDraft.getName());
+        assertEquals(boardToCheck.isClosed(),boardDraft.isClosed());
         return this;
     }
 
@@ -42,7 +42,7 @@ public class TrelloAssertProvider {
         ListDto listToCheck = responseToCheck
             .extract()
             .as(ListDto.class);
-        MatcherAssert.assertThat(listToCheck.getName(), equalTo(listDtoDraft.getName()));
+        assertEquals(listToCheck.getName(), listDtoDraft.getName());
         return this;
     }
 
