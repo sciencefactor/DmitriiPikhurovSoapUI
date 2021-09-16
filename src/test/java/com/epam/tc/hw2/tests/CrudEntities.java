@@ -33,6 +33,8 @@ public class CrudEntities extends InitTest {
     void serviceShouldDeleteBoard() {
         Response deleteBoard = trelloApi.deleteBoard(testBoard);
         createdBoards.remove(testBoard);
+
+        // Assert that board was created successful
         assertThat(deleteBoard).statusCodeIsOk();
     }
 
@@ -43,6 +45,8 @@ public class CrudEntities extends InitTest {
         trelloApi.createList(testBoard, ListDto.builder().name(listName).build());
         Response deleteBoard = trelloApi.deleteBoard(testBoard);
         createdBoards.remove(testBoard);
+
+        // Assert that board was delete successful
         assertThat(deleteBoard).statusCodeIsOk();
     }
 
@@ -70,6 +74,8 @@ public class CrudEntities extends InitTest {
         BoardDto remoteTarget = trelloApi.createBoard(BoardDto.builder().name(boardName).build());
         createdBoards.add(remoteTarget);
         ListDto movedList = trelloApi.moveList(remoteList, remoteTarget);
+
+        // Assert that card was moved successful
         assertEquals(movedList.getName(), remoteList.getName());
     }
 }
