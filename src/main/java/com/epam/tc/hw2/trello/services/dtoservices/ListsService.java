@@ -20,7 +20,6 @@ public class ListsService {
 
         assertThat(newListResponse)
             .checkContentIsJson()
-            .checkListHasCorrectKeys()
             .checkListDto(listDraft);
         return newListResponse.as(ListDto.class);
     }

@@ -11,7 +11,7 @@ public class BoardDto {
     String name;
     String desc;
     String descData;
-    String closed;
+    boolean closed;
     String idOrganization;
     String idEnterprise;
     String pinned;

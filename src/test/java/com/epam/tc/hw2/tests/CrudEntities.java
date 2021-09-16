@@ -18,7 +18,7 @@ public class CrudEntities extends InitTest {
     @BeforeMethod
     void createNewBoardPrecondition() {
         String name = RandomStringUtils.randomAlphabetic(10);
-        BoardDto boardDraft = BoardDto.builder().name(name).build();
+        BoardDto boardDraft = BoardDto.builder().name(name).closed(false).build();
         testBoard = trelloApi.createBoard(boardDraft);
         createdBoards.add(testBoard);
     }

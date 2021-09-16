@@ -19,7 +19,6 @@ public class BoardsService {
 
         assertThat(newBoardResponse)
             .checkContentIsJson()
-            .checkBoardHasCorrectKeys()
             .checkBoardDto(board);
         return newBoardResponse.as(BoardDto.class);
     }

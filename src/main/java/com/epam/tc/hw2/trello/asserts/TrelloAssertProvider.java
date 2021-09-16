@@ -1,10 +1,6 @@
 package com.epam.tc.hw2.trello.asserts;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 import com.epam.tc.hw2.trello.dto.BoardDto;
 import com.epam.tc.hw2.trello.dto.ListDto;
@@ -13,6 +9,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 public class TrelloAssertProvider {
@@ -32,27 +29,20 @@ public class TrelloAssertProvider {
         return this;
     }
 
-    public TrelloAssertProvider checkBoardHasCorrectKeys() {
-        responseToCheck
-            .body("$", hasKey("id"), "$", hasKey("name"), "$", hasKey("url"));
-        return this;
-    }
-
     public TrelloAssertProvider checkBoardDto(BoardDto boardDraft) {
-        responseToCheck
-            .body("name", equalTo(boardDraft.getName()), "id", is(not(empty())));
+        BoardDto boardToCheck = responseToCheck
+            .extract()
+            .as(BoardDto.class);
+        MatcherAssert.assertThat(boardToCheck.getName(), equalTo(boardDraft.getName()));
+        MatcherAssert.assertThat(boardToCheck.isClosed(), equalTo(boardDraft.isClosed()));
         return this;
     }
 
     public TrelloAssertProvider checkListDto(ListDto listDtoDraft) {
-        responseToCheck
-            .body("name", equalTo(listDtoDraft.getName()), "id", is(not(empty())), "idBoard", is(not(empty())));
-        return this;
-    }
-
-    public TrelloAssertProvider checkListHasCorrectKeys() {
-        responseToCheck
-            .body("$", hasKey("id"), "$", hasKey("name"), "$", hasKey("idBoard"), "$", hasKey("closed"));
+        ListDto listToCheck = responseToCheck
+            .extract()
+            .as(ListDto.class);
+        MatcherAssert.assertThat(listToCheck.getName(), equalTo(listDtoDraft.getName()));
         return this;
     }
 
